@@ -7,6 +7,7 @@ import { emitOSC, type OSC_SIGNAL } from "./apiOSC"
 import { sendRestCommandSync } from "./rest"
 import { midiToNote } from "./midi"
 import { sendMidi } from "../helpers/showActions"
+import { getDynamicValue } from "../edit/scripts/itemHelpers"
 
 const OSC_SIGNAL_INPUTS: Input[] = [
     { label: "inputs.url", id: "host", type: "string", value: "0.0.0.0" }, // ws://127.0.0.1
@@ -76,7 +77,8 @@ const EMIT_DATA = {
     http: (signal: API_rest_command, values: EmitterTemplateValue[]) => {
         const REST_DATA = signal
         REST_DATA.contentType = "application/json"
-        REST_DATA.payload = formatData.http(values)
+        // replace dynamic values before stringifying, so multi-line values (like {show_text_code}) are escaped properly
+        REST_DATA.payload = formatData.http(values.map((a) => (typeof a.value === "string" && a.value.includes("{") ? { ...a, value: getDynamicValue(a.value) } : a)))
         sendRestCommandSync(REST_DATA)
     },
     midi: (signal: { type?: "noteon" | "noteoff"; output?: string }, values: EmitterTemplateValue[]) => {

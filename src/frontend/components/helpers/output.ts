@@ -219,7 +219,11 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
             if (currentOutSlideId !== data?.id || resetActionTrigger) {
                 const category = get(showsCache)[data.id]?.category || ""
                 const categoryActionId = get(categories)[category]?.action
-                if (!overrideCategoryAction && categoryActionId) runAction(get(actions)[categoryActionId], { source: "slide" }, true)
+                if (!overrideCategoryAction && categoryActionId) {
+                    const categoryAction = get(actions)[categoryActionId]
+                    // timeout to activate after output has updated (so dynamic values resolve against this show)
+                    setTimeout(() => runAction(categoryAction, { source: "slide" }, true))
+                }
             }
 
             if (overrideCategoryAction) resetActionTrigger = true

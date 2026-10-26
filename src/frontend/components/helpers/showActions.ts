@@ -60,6 +60,7 @@ import {
     timers,
     variables
 } from "./../../stores"
+import { getPlainEditorText } from "../show/getTextEditor"
 import { clone, keysToID, sortByName } from "./array"
 import { downloadOnlineMedia, encodeFilePath, getExtension, getFileName, getMedia, getMediaStyle, getMediaType, locateMediaFile, removeExtension } from "./media"
 import { defaultLayers, getActiveOutputs, getAllActiveOutputIds, getAllNormalOutputs, getAllStageOutputs, getFirstActiveOutput, getFirstOutput, getWindowOutputId, isOutCleared, refreshOut, resolveOutputId, resolveOutputIds, setOutput, startFolderTimer } from "./output"
@@ -761,7 +762,7 @@ export function sendMidi(data: any) {
 
 // DYNAMIC VALUES
 
-const commonOnly = ["time_str", "project_section_notes", "project_section_time", "show_name_next", "show_text_full", "slide_group_text", "slide_text_", "layout_notes", "slide_group_upcoming", "slide_notes_next", "exif_", "audio_subtitle", "audio_genre", "audio_year", "audio_volume"]
+const commonOnly = ["time_str", "project_section_notes", "project_section_time", "show_name_next", "show_text_full", "show_text_code", "slide_group_text", "slide_text_", "layout_notes", "slide_group_upcoming", "slide_notes_next", "exif_", "audio_subtitle", "audio_genre", "audio_year", "audio_volume"]
 const deprecatedDynamicValues = ["show_name_next", "project_section_next", "project_section_time_next", "slide_group_next", "slide_group_next_color", "slide_notes_next", "slide_text_previous", "slide_text_current", "slide_text_next"]
 
 function insertOffsetVariants(idList: string[]): string[] {
@@ -1152,7 +1153,7 @@ export function replaceDynamicValues(text: string, { showId, layoutId, slideInde
 
         if (!dynamicValues[dynamicId]) return ""
 
-        const rawValue = dynamicValues[dynamicId]({ show, ref, slideIndex, layout, projectRef, outSlide, bgPath, videoData, audioTime, audioDuration, audioPath, offset }) ?? ""
+        const rawValue = dynamicValues[dynamicId]({ showId, show, ref, slideIndex, layout, projectRef, outSlide, bgPath, videoData, audioTime, audioDuration, audioPath, offset }) ?? ""
         const value = Array.isArray(rawValue) ? rawValue : rawValue.toString()
 
         // send data to output
@@ -1278,6 +1279,7 @@ const dynamicValues = {
     slide_text_next: ({ show, ref, slideIndex, outSlide }) => getSlideText({ outSlide, show, ref }, slideIndex + 1), // DEPRECATED
     slide_group_text: ({ show, ref, slideIndex, outSlide, offset }) => getGroupText({ outSlide, show, ref, slideIndex }, offset),
     show_text_full: ({ show, ref }) => ref.map((a) => getTextLines(show?.slides?.[a.id]).join("<br>")).join("<br><br>"),
+    show_text_code: ({ showId, show }) => (show ? getPlainEditorText(showId) : ""),
 
     // image (exif)
     exif_datetime: ({ bgPath }) => getExifData(bgPath, "DateTimeOriginal"),
