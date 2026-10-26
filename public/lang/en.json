@@ -684,6 +684,7 @@
         "remove_group": "Remove group from arrangement",
         "remove_group_short": "Remove group",
         "choose_group": "Choose group",
+        "choose_category": "Choose category",
         "goto_group": "Go to group",
         "active_outputs": "Active outputs",
         "all_outputs": "All outputs",
@@ -918,6 +919,7 @@
         "activate_background_cleared": "Activate when background is cleared",
         "activate_show_created": "Activate when show is created",
         "activate_show_opened": "Activate when show is opened",
+        "activate_show_start": "Activate when show is started",
         "activate_audio_playlist_ended": "Activate when audio playlist has ended",
         "mark_played": "Mark as played",
         "unmark_all_as_played": "Reset all mark as played"

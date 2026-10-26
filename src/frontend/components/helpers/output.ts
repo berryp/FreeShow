@@ -211,7 +211,12 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
             const currentOutSlideId = get(outputs)[outs?.[0]]?.out?.slide?.id || ""
 
             // log usage if show is not currently outputted
-            if (currentOutSlideId !== data?.id) appendShowUsage(data.id)
+            if (currentOutSlideId !== data?.id) {
+                appendShowUsage(data.id)
+                // timeout to activate after output has updated
+                const showCategory = get(showsCache)[data.id]?.category || ""
+                setTimeout(() => customActionActivation("show_start", showCategory))
+            }
 
             const overrideCategoryAction = ref[data?.index]?.data?.actions?.slideActions?.find((action) => Object.values(action.customData || {}).find((a1) => Object.entries(a1).find(([key, value]) => key === "overrideCategoryAction" && value === true)))
 

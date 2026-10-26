@@ -14,6 +14,7 @@ export const customActionActivations = [
 
     { id: "show_created", name: "actions.activate_show_created", icon: "slide" },
     { id: "show_opened", name: "actions.activate_show_opened", icon: "slide" },
+    { id: "show_start", common: true, name: "actions.activate_show_start", icon: "slide", inputs: true },
     { id: "slide_click", name: "actions.activate_slide_clicked", icon: "slide" },
     { id: "group_start", common: true, name: "actions.activate_group_start", icon: "groups", inputs: true },
     { id: "pdf_start", name: "actions.activate_pdf_start", icon: "pdf" },
