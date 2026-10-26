@@ -182,6 +182,9 @@ export function setOutput(type: string, data: any, toggle = false, outputId = ""
             // timeout to activate after output has updated
             if (groupId) setTimeout(() => customActionActivation("group_start", groupId))
 
+            const categoryId = _show(data.id).get("category")
+            if (categoryId) setTimeout(() => customActionActivation("category_start", categoryId))
+
             // start recording time on break slides (no items, globalGroup === "break")
             const layoutSlideIndex = ref[data.index]?.type === "parent" ? (ref[data.index]?.index ?? -1) : -1
             if (slide.globalGroup === "break" && !slide.items?.length && layoutSlideIndex > -1) {
